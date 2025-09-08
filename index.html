@@ -3,17 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>week2</title>
 </head>
 <body>
-    <h1>Hello world</h1>
-    <button id="my-button">click</button>
 
-    <button id="add-data">add</button>
-    <textarea id="text"> </textarea>
-    <ul id="my-list">
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Admin</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+
+        <tbody id="table">
+            <tr><td>Webmaster</td><td>example@email.com</td><td>X</td><td></td></tr>
+            <tr><td>User123</td><td>example@email.com</td><td>-</td><td> </td></tr>
+            <tr><td>AnotherUser222</td><td>example@email.com</td><td>-</td><td></td></tr>
+        </tbody>    
+    </table>
+
+    <form action="">
+        <fieldset>
+            <input type="text" name="input-username" id="input-username" placeholder="enter username">
+            <input type="text" name="input-email" id="input-email" placeholder="enter email">
+            <input type="checkbox" name="input-admin" id="input-admin">
+            <input type="file" name="input-image" id="input-image" accept="image/*" placeholder="upload">
+            <input type="submit" name="submit-data"id="submit-data" value="Submit">
+        </fieldset>
         
-    </ul>
+        
+    </form>
+
+    <button id="empty-table">Empty table</button>
+
+
 </body>
 </html>
-<script src="index.js"></script>
+<script src="/index.js"></script>
