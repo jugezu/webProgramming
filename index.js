@@ -1,70 +1,79 @@
-document.getElementById("submit-data").addEventListener("click", function(event){
-    event.preventDefault()
+const populationURL= "https://pxdata.stat.fi/PxWeb/api/v1/fi/StatFin/vaerak/statfin_vaerak_pxt_11ra.px"
+const employmentURL= "https://pxdata.stat.fi/PxWeb/api/v1/fi/StatFin/tyokay/statfin_tyokay_pxt_115b.px"
 
-    const username= document.getElementById("input-username")
-    const email=document.getElementById("input-email")
-    const admin= document.getElementById("input-admin")
-    
-    const admin2 = admin.checked ? "X": "-"
+const fetchData= async(url,body)=>{
+    const response = await fetch(url,{
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    })
+    return await response.json()
 
-  
+}
 
-    let picture=""
-    const file= document.getElementById("input-image")
-    const image= file.files[0]
+function setupTable(municipalityData,employmentData) {
 
-    if(image){
+    const municipalities = municipalityData.dimension.Alue.category.label
+    const populations = municipalityData.value
+    const employment = employmentData.value
 
-        //https://www.w3schools.com/js/js_string_templates.asp
-        // I forgot how to use html in js but this quick tutorial helped me
-        const imageURL= URL.createObjectURL(image)
-        picture =`<img src="${imageURL}" height="64" width="64">`
+    const tableBody = document.getElementById("table");
 
-    }
+    Object.entries(municipalities).forEach(([key, name], index) => {
+        let tr = document.createElement("tr")
+        let td1 = document.createElement("td")
+        let td2 = document.createElement("td")
+        let td3 = document.createElement("td")
+        let td4 = document.createElement("td")
 
+        td1.innerText = name
+        td2.innerText = populations[index]
+        td3.innerText = employment[index]
 
-
-    const tbody = document.getElementById("table")
-
-    // https://stackoverflow.com/questions/3065342/how-do-i-iterate-through-table-rows-and-cells-in-javascript
-    var found= false
-
-    for (let row of tbody.rows){
-        const username2= row.cells[0];
-
-        if(username2.innerText===username.value){
-            row.cells[1].innerText=document.getElementById("input-email").value
-            row.cells[2].innerText=admin2
-            row.cells[3].innerHTML=picture
-            found=true
-            break
-        }
-    }
-    if(!found){
-        const row= document.createElement("tr")
-        // https://stackoverflow.com/questions/55199645/javascript-add-new-row-to-table-using-appendchild
-    
-        let html = '<td>' + username.value + '</td>'+
-        '<td>' +email.value + '</td>'+
-        '<td>' +admin2 + '</td>'+
-        '<td>' +picture +'</td>'
-        row.innerHTML = html
-    
-
-        tbody.appendChild(row)
-
-    }
+        // rounding: https://www.w3schools.com/jsref/jsref_tofixed.asp
+        let employmentRate=((employment[index] / populations[index])*100)
+        let roundedEmployment = employmentRate.toFixed(2)
         
+        td4.innerText = roundedEmployment+"%"
 
-})
+        // how to change css styles in js: https://www.udacity.com/blog/2021/06/javascript-css.html 
+        if(roundedEmployment>45){
+            tr.style.backgroundColor= "#abffbd";
+        }
 
- // https://stackoverflow.com/questions/7271490/delete-all-rows-in-an-html-table
- // deleting table
-
-document.getElementById("empty-table").addEventListener("click", ()=> {
-    const tbody= document.getElementById("table")
-
-    tbody.innerHTML = ""
-})
+        //I don't see anything under 25%
+        if(roundedEmployment<25){
+            tr.style.backgroundColor= "#ff9e9e";
+        } 
 
 
+        tr.appendChild(td1)
+        tr.appendChild(td2)
+        tr.appendChild(td3)
+        tr.appendChild(td4)
+        tableBody.appendChild(tr);
+    });
+
+}
+
+
+const initializeCode= async() =>{
+    const populationBody = await (await fetch("/population_query.json")).json();
+    const employmentBody = await (await fetch("/employment_query.json")).json();
+
+
+    const [municipalityData, employmentData] = await Promise.all([
+        fetchData(populationURL,populationBody),
+        fetchData(employmentURL,employmentBody)
+    ])
+
+    //const municipalityData= await fetchData(populationURL,populationBody)
+    //const employmentData= await fetchData(employmentURLL,populationBody)
+
+    setupTable(municipalityData,employmentData)
+}
+
+
+document.addEventListener("DOMContentLoaded", initializeCode);

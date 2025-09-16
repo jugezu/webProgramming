@@ -1,0 +1,41 @@
+
+td{
+    padding: 6px;
+    border-bottom: 1px solid gray;
+}
+
+/* changing colors of odd and even rows: https://stackoverflow.com/questions/3084261/alternate-table-row-color-using-css */
+
+tbody tr:nth-child(odd){
+    background-color: #ffffff;
+}
+tbody tr:nth-child(even){
+    background-color:#f2f2f2;
+}
+
+
+th{
+    background-color: #b7d0ff;
+    padding: 12px 0px 12px 6px;
+    border-bottom: 2px solid gray;
+}
+
+table{
+    border-collapse: collapse; /* this is what makes the 1px line better*/
+    font-size: 16px;
+    text-align: left;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.center {
+    margin:auto;
+    padding: 60px;
+    width: 60%;
+    
+
+}
+
+h1{
+    text-align: center;
+}
