@@ -1,41 +1,65 @@
+body{
+    background-color: #eceff1;
 
-td{
-    padding: 6px;
-    border-bottom: 1px solid gray;
-}
-
-/* changing colors of odd and even rows: https://stackoverflow.com/questions/3084261/alternate-table-row-color-using-css */
-
-tbody tr:nth-child(odd){
-    background-color: #ffffff;
-}
-tbody tr:nth-child(even){
-    background-color:#f2f2f2;
-}
-
-
-th{
-    background-color: #b7d0ff;
-    padding: 12px 0px 12px 6px;
-    border-bottom: 2px solid gray;
-}
-
-table{
-    border-collapse: collapse; /* this is what makes the 1px line better*/
-    font-size: 16px;
-    text-align: left;
-    table-layout: fixed;
-    width: 100%;
-}
-
-.center {
-    margin:auto;
-    padding: 60px;
-    width: 60%;
+    font-family: "Roboto", sans-serif;
     
+}
+
+
+.show-container { 
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.show-data{
+    width: 100%;
+    background-color:#cfd8dc ;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 6px;
+    box-shadow: 5px 5px rgb(201, 200, 200);
 
 }
 
-h1{
+.show-container h1{
     text-align: center;
+}
+
+img{
+    display:block;
+}
+
+.show-info{
+    width: 100%;
+    
+}
+
+
+
+
+
+/* desktop*/
+@media (width> 800px ) {
+    
+    .show-data{
+        display: flex;
+    }
+    .show-info{
+        padding: 10px;
+    }
+}
+
+/*mobile*/
+@media (width <=800px){
+
+    img{
+        margin: auto;
+    }
+    .show-info p {
+        text-align: center;
+        padding: 10px;
+        
+        
+    }
 }

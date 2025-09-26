@@ -1,79 +1,48 @@
-const populationURL= "https://pxdata.stat.fi/PxWeb/api/v1/fi/StatFin/vaerak/statfin_vaerak_pxt_11ra.px"
-const employmentURL= "https://pxdata.stat.fi/PxWeb/api/v1/fi/StatFin/tyokay/statfin_tyokay_pxt_115b.px"
+const baseURL="https://api.tvmaze.com/search/shows?q="
 
-const fetchData= async(url,body)=>{
-    const response = await fetch(url,{
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(body)
-    })
-    return await response.json()
+// listen submit instead of click
+document.querySelector("form").addEventListener("submit", async(event)=>{
+    const input= document.getElementById("input-show")
+    const form= document.querySelector("form")
+    const container= document.querySelector(".show-container")
 
-}
+    //const inputText=encodeURIComponent(input.value.trim())
+    const inputText = decodeURIComponent(input.value)
+    event.preventDefault() // safe to refresh
 
-function setupTable(municipalityData,employmentData) {
+    if(inputText==''){
+        return
+    }
 
-    const municipalities = municipalityData.dimension.Alue.category.label
-    const populations = municipalityData.value
-    const employment = employmentData.value
+    try{
+        const response = await fetch(baseURL + inputText)
 
-    const tableBody = document.getElementById("table");
+        const data = await response.json()
 
-    Object.entries(municipalities).forEach(([key, name], index) => {
-        let tr = document.createElement("tr")
-        let td1 = document.createElement("td")
-        let td2 = document.createElement("td")
-        let td3 = document.createElement("td")
-        let td4 = document.createElement("td")
-
-        td1.innerText = name
-        td2.innerText = populations[index]
-        td3.innerText = employment[index]
-
-        // rounding: https://www.w3schools.com/jsref/jsref_tofixed.asp
-        let employmentRate=((employment[index] / populations[index])*100)
-        let roundedEmployment = employmentRate.toFixed(2)
-        
-        td4.innerText = roundedEmployment+"%"
-
-        // how to change css styles in js: https://www.udacity.com/blog/2021/06/javascript-css.html 
-        if(roundedEmployment>45){
-            tr.style.backgroundColor= "#abffbd";
-        }
-
-        //I don't see anything under 25%
-        if(roundedEmployment<25){
-            tr.style.backgroundColor= "#ff9e9e";
-        } 
+        container.innerHTML="" //this should remove old searches
 
 
-        tr.appendChild(td1)
-        tr.appendChild(td2)
-        tr.appendChild(td3)
-        tr.appendChild(td4)
-        tableBody.appendChild(tr);
-    });
+        data.forEach(element => {
 
-}
+            //help in this section: https://stackoverflow.com/questions/50267313/show-search-results-from-api-call
+            const show=element.show
 
+            const template= `
+            <div class="show-data"> 
+                ${show.image ? `<img src="${show.image.medium}">` : ''}
+                <div class="show-info"> 
+                    <h1>${show.name}</h1> 
+                    ${show.summary} 
+                </div> 
+            </div>`
 
-const initializeCode= async() =>{
-    const populationBody = await (await fetch("/population_query.json")).json();
-    const employmentBody = await (await fetch("/employment_query.json")).json();
+            // add new show to the list
+            container.innerHTML= container.innerHTML+ template
+            
+        });
 
-
-    const [municipalityData, employmentData] = await Promise.all([
-        fetchData(populationURL,populationBody),
-        fetchData(employmentURL,employmentBody)
-    ])
-
-    //const municipalityData= await fetchData(populationURL,populationBody)
-    //const employmentData= await fetchData(employmentURLL,populationBody)
-
-    setupTable(municipalityData,employmentData)
-}
-
-
-document.addEventListener("DOMContentLoaded", initializeCode);
+    } catch (error){
+        console.error(error)
+    }
+    
+})
