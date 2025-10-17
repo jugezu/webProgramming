@@ -1,0 +1,178 @@
+/* help with the grids: https://grid.layoutit.com/ */
+
+body {
+    font-family: 'Poppins',sans-serif;
+    overflow-x: hidden; /* removes horizontal scrol*/
+    background-color: rgb(0, 0, 0);
+}
+#container {
+    display: flex;
+    justify-content:space-between;
+    
+}
+.meteo{
+    font-weight: bold;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.header{
+    background-color:gold;
+    align-items:  center;
+    display: flex;
+    gap: 10px;
+    padding: 40px;
+}
+
+
+.header i:hover {
+    color: white;
+}
+
+
+.weather-box{
+    display: none;
+}
+.weather-box2{
+    display: none;
+}
+
+.weather-box.show {
+    display: block;
+    margin-top: 25px;
+    flex: auto;
+    padding: 25px;
+    background-color: gold;
+    
+}
+
+.weather-box2.show {
+    display: block;
+    flex: auto;
+    padding: 25px;
+    background-color: gold;
+    
+}
+
+.current-weather-info{
+    text-align: center;
+}
+
+#weather-data{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+    
+}
+
+
+.weather-row {
+    display: contents; 
+    padding: 10px;
+}
+
+.weather-group-body{
+    display: none;
+}
+.weather-group-body.open{
+    display: block;
+}
+
+
+.day {
+    grid-column: 1;
+    font-weight: bold;
+    text-align: left;
+    
+    margin-top: 50px;
+}
+
+.weather-info {
+    grid-column: 2;
+    text-align: center
+}
+
+.basic-font{
+    font-weight: 600;
+}
+
+#municipality{
+    text-align: center;
+}
+
+.maximumTemperatute{
+    color: red;
+    font-weight: 600;
+}
+.minimumTemperatute{
+    color: blue;
+    font-weight: 600;
+}
+
+#input-area{
+    display: inline-block;
+    padding: 12px 18px;
+    background-color:rgb(255, 255, 255); 
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    border-radius:  10px;
+    text-align: center;
+
+}
+
+/*Buttons */
+
+.btn{
+    display: inline-block;
+    padding: 12px 18px;
+    background-color:rgb(255, 255, 255); 
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    border-radius:  10px;
+    cursor: pointer;
+    text-align: center;
+    transition: 0.5s;
+}
+
+.btn:hover{
+    opacity: 0.8;
+}
+
+
+/* Media Queries */
+
+@media (max-width:585px){
+    .header{
+        flex-direction: column;
+        align-items: stretch;
+
+    }
+    
+    .header i{
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    .btn{
+        padding:10px 15px ;
+    }
+
+    #input-area{
+        margin-bottom: 10px;
+    }
+
+    .meteo{
+        font-weight: 500;
+    }
+    
+    
+    
+}
+    
+    
+ 
